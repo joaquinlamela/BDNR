@@ -14,13 +14,13 @@ const Nav = styled.nav`
   justify-content: space-between;
   margin-left: 200px;
   gap: 15px;
+  width: 500px;
   a {
     margin: 0 0px;
     text-decoration: none;
     color: #1c1a46;
     font-size: 20px;
     font-family: "Darwin Pro Light";
-    width: 95px;
   }
   a:hover {
     color: #b23d3d;

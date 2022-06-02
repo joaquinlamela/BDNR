@@ -6,7 +6,7 @@ import Nav from "./styles/Nav";
 const Navbar = () => {
   return (
     <Header>
-      <Link to="/"> Zulahe </Link>
+      <Link to="/"> User-emulator </Link>
 
       <Nav>
         <Link to="/"> Crear usuario </Link>
