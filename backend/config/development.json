@@ -1,0 +1,9 @@
+{
+  "server": {
+    "url": "/api",
+    "port": 3001
+  },
+  "Db": {
+    "TeslaDb": "mongodb://127.0.0.1:27017/TeslaDB"
+  }
+}
