@@ -7,6 +7,7 @@ const createNewUser = "Crear un nuevo usuario";
 const obtainAllUser = "Obtener todos los usuarios";
 const associatePaymentsMethod = "Asociar metodos de pago";
 const getUser = "Obtener un usuario";
+const exit = "Salir";
 
 const main = async () => {
   inquirer
@@ -20,6 +21,7 @@ const main = async () => {
           getUser,
           associatePaymentsMethod,
           obtainAllUser,
+          exit,
         ],
       },
     ])
@@ -43,6 +45,7 @@ const main = async () => {
 
               const response = await postUser(answers);
               console.log(response.data);
+              return main();
             })
             .catch((err) => {
               console.log("Un error ha ocurrido: " + err);
@@ -66,6 +69,7 @@ const main = async () => {
                       answers[usernameAttribute] +
                       ` no fue encontrado en el sistema.`
               );
+              return main();
             })
             .catch((err) => {
               console.log("Un error ha ocurrido: " + err);
@@ -79,6 +83,9 @@ const main = async () => {
 
           const response = await getAllUsers();
           console.log(response.data);
+          if (response) {
+            return main();
+          }
           break;
 
         case associatePaymentsMethod:
@@ -92,10 +99,17 @@ const main = async () => {
 
               const response = await deleteUserByEmail(answers[emailAttribute]);
               console.log(response.data);
+              return main();
             })
             .catch((err) => {
               console.log(err);
             });
+          break;
+
+        case exit:
+          console.log(
+            "Muchas gracias por usar nuestro sistema, hasta la próxima."
+          );
           break;
 
         default:
@@ -109,14 +123,14 @@ const main = async () => {
 
 main();
 
-const emailAttribute = "email";
-const passwordAttribute = "password";
-const nameAttribute = "name";
-const lastnameAttribute = "lastname";
-const usernameAttribute = "username";
-const birthdayAttribute = "birthday";
-const locationAttribute = "location";
-const language = "language";
+const emailAttribute = "Email";
+const passwordAttribute = "Password";
+const nameAttribute = "Name";
+const lastnameAttribute = "Lastname";
+const usernameAttribute = "Username";
+const birthdayAttribute = "Birthday";
+const locationAttribute = "Location";
+const language = "Language";
 
 const confirmValidInput = async (input) => {
   if (!input || !input.trim().length) {
