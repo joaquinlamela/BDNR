@@ -12,4 +12,12 @@ module.exports = class UserBusinessLogic {
   async getAll() {
     return await this.userRepository.getAll();
   }
+
+  async getUserByUsername(req) {
+    let username = req.params.username;
+    if (username) {
+      return await this.userRepository.getUserByUsername(username);
+    }
+    throw new Error("El usuario no fue encontrado.");
+  }
 };

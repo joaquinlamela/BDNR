@@ -17,4 +17,14 @@ module.exports = class UserRepository {
       throw new Error(`No se puede conectar con la base de datos ${err}`);
     }
   }
+
+  async getUserByUsername(username) {
+    try {
+      return await Db.Users.find({
+        Username: new RegExp("^" + username + "$", "i"),
+      });
+    } catch (err) {
+      throw new Error(`No se puede conectar con la base de datos ${err}`);
+    }
+  }
 };
