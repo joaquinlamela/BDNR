@@ -61,9 +61,11 @@ const main = async () => {
                   answers[usernameAttribute]
               );
 
-              const response = await getUserByUsername(answers[emailAttribute]);
+              const response = await getUserByUsername(
+                answers[usernameAttribute]
+              );
               console.log(
-                response.data
+                response.data && response.data.length
                   ? response.data
                   : `Nombre de usuario: ` +
                       answers[usernameAttribute] +
@@ -226,21 +228,10 @@ postUser = function (user) {
 };
 
 getUserByUsername = function (username) {
-  return axios.get(process.env.API_URL, {
-    params: {
-      username: username,
-    },
-  });
+  console.log(username);
+  return axios.get(process.env.API_URL + username);
 };
 
 getAllUsers = function () {
   return axios.get(process.env.API_URL, {});
-};
-
-deleteUserByEmail = function (email) {
-  return axios.delete(process.env.API_URL, {
-    params: {
-      email: email,
-    },
-  });
 };
