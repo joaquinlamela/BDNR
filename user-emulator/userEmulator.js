@@ -86,21 +86,75 @@ const main = async () => {
           const response = await getAllUsers();
           console.log(response.data);
           if (response) {
+            console.log(response.data);
+            return main();
+          } else {
+            console.log("No hay usuarios registrados en el sistema.");
             return main();
           }
           break;
 
         case associatePaymentsMethod:
           inquirer
-            .prompt(getUserUsenameQuestion)
+            .prompt(associatePaymentsMethodQuestion)
             .then(async (answers) => {
-              console.log(
-                "Attempting to delete the client with email: " +
-                  answers[emailAttribute]
-              );
+              const { Username, Payments } = answers;
 
-              const response = await deleteUserByEmail(answers[emailAttribute]);
-              console.log(response.data);
+              switch (Payments) {
+                case paypal:
+                  const { Email, CardNumber } = await inquirer.prompt(
+                    associatePayPalAccountQuestions
+                  );
+                  const paramsPayPal = {
+                    Username,
+                    Email,
+                    CardNumber,
+                    Method: Payments,
+                  };
+                  try {
+                    const responsePayPal = await updateUser(paramsPayPal);
+                  } catch (e) {
+                    console.log("Ha ocurrido un error:" + e);
+                  }
+
+                  break;
+
+                case money:
+                  const paramsMoney = {
+                    Username,
+                    Method: Payments,
+                  };
+                  try {
+                    const responseMoney = await updateUser(paramsMoney);
+                  } catch (e) {
+                    console.log("Ha ocurrido un error:" + e);
+                  }
+                  break;
+
+                case creditCard:
+                  const { CreditCardNumber, ExpirationDate, Csv } =
+                    await inquirer.prompt(associateCreditCardQuestions);
+
+                  const paramsCreditCard = {
+                    Username,
+                    CardNumber: CreditCardNumber,
+                    ExpirationDate,
+                    Csv,
+                    Method: Payments,
+                  };
+                  try {
+                    const responseCreditCard = await updateUser(
+                      paramsCreditCard
+                    );
+                  } catch (e) {
+                    console.log("Ha ocurrido un error:" + e);
+                  }
+
+                  break;
+
+                default:
+                  break;
+              }
               return main();
             })
             .catch((err) => {
@@ -133,6 +187,11 @@ const usernameAttribute = "Username";
 const birthdayAttribute = "Birthday";
 const locationAttribute = "Location";
 const language = "Language";
+const paymentMethodsAttribute = "Payments";
+const cardNumberAttribute = "CardNumber";
+const creditCardNumberAttribute = "CreditCardNumber";
+const expirationDateAttribute = "ExpirationDate";
+const csvAttribute = "Csv";
 
 const confirmValidInput = async (input) => {
   if (!input || !input.trim().length) {
@@ -222,6 +281,61 @@ const getUserUsenameQuestion = [
   },
 ];
 
+const creditCard = "Tarjeta de crédito";
+const money = "Efectivo";
+const paypal = "PayPal";
+
+const associatePaymentsMethodQuestion = [
+  {
+    type: "input",
+    name: usernameAttribute,
+    message: "Nombre de usuario al cual quiere asociar un método de pago:",
+    validate: confirmValidInput,
+  },
+  {
+    type: "rawlist",
+    name: paymentMethodsAttribute,
+    message: "Seleccione el método de pago:",
+    choices: [paypal, creditCard, money],
+  },
+];
+
+const associatePayPalAccountQuestions = [
+  {
+    type: "input",
+    name: emailAttribute,
+    message: "Email de la cuenta a utilizar en PayPal:",
+    validate: validateEmail,
+  },
+  {
+    type: "input",
+    name: cardNumberAttribute,
+    message: "Número de la tarjeta a utilizar:",
+    validate: confirmValidInput,
+  },
+];
+
+const associateCreditCardQuestions = [
+  {
+    type: "input",
+    name: creditCardNumberAttribute,
+    message: "Número de la tarjeta de crédito a utilizar:",
+    validate: confirmValidInput,
+  },
+  {
+    type: "input",
+    name: expirationDateAttribute,
+    message: "Fecha de vencimiento (MM/AA):  ",
+    validate: confirmValidInput,
+  },
+  {
+    type: "input",
+    name: csvAttribute,
+    message: "CSV (código de seguridad): ",
+    validate: confirmValidInput,
+  },
+];
+
 postUser = function (user) {
   console.log(user);
   return axios.post(process.env.API_URL, user);
@@ -234,4 +348,10 @@ getUserByUsername = function (username) {
 
 getAllUsers = function () {
   return axios.get(process.env.API_URL, {});
+};
+
+updateUser = function (params) {
+  return axios.patch(process.env.API_URL, {
+    params: params,
+  });
 };
