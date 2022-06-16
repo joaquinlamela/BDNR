@@ -1,0 +1,17 @@
+{
+  "name": "emulator",
+  "version": "1.0.0",
+  "main": "bin/messageEmulator.js",
+  "license": "MIT",
+  "bin": {
+    "emulator": "./bin/messageEmulator.js"
+  },
+  "scripts": {
+    "start": "node userEmulator.js"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "dotenv": "^10.0.0",
+    "inquirer": "^8.1.1"
+  }
+}
