@@ -27,4 +27,18 @@ module.exports = class UserRepository {
       throw new Error(`No se puede conectar con la base de datos ${err}`);
     }
   }
+
+  async associatePaymentMethod(username, data) {
+    try {
+      return await Db.Users.findOneAndUpdate(
+        { Username: new RegExp("^" + username + "$", "i") },
+        { $push: { PaymentMethods: data } },
+        {
+          new: true,
+        }
+      );
+    } catch (err) {
+      throw new Error(`No se puede conectar con la base de datos ${err}`);
+    }
+  }
 };

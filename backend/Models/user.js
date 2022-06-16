@@ -7,6 +7,7 @@ const User = {
   Birthday: String,
   Location: String,
   Language: String,
+  PaymentMethods: Array,
 };
 
 module.exports = User;

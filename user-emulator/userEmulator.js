@@ -106,13 +106,15 @@ const main = async () => {
                     associatePayPalAccountQuestions
                   );
                   const paramsPayPal = {
-                    Username,
                     Email,
                     CardNumber,
                     Method: Payments,
                   };
                   try {
-                    const responsePayPal = await updateUser(paramsPayPal);
+                    const responsePayPal = await updateUser(
+                      Username,
+                      paramsPayPal
+                    );
                   } catch (e) {
                     console.log("Ha ocurrido un error:" + e);
                   }
@@ -121,11 +123,13 @@ const main = async () => {
 
                 case money:
                   const paramsMoney = {
-                    Username,
                     Method: Payments,
                   };
                   try {
-                    const responseMoney = await updateUser(paramsMoney);
+                    const responseMoney = await updateUser(
+                      Username,
+                      paramsMoney
+                    );
                   } catch (e) {
                     console.log("Ha ocurrido un error:" + e);
                   }
@@ -136,7 +140,6 @@ const main = async () => {
                     await inquirer.prompt(associateCreditCardQuestions);
 
                   const paramsCreditCard = {
-                    Username,
                     CardNumber: CreditCardNumber,
                     ExpirationDate,
                     Csv,
@@ -144,6 +147,7 @@ const main = async () => {
                   };
                   try {
                     const responseCreditCard = await updateUser(
+                      Username,
                       paramsCreditCard
                     );
                   } catch (e) {
@@ -350,8 +354,6 @@ getAllUsers = function () {
   return axios.get(process.env.API_URL, {});
 };
 
-updateUser = function (params) {
-  return axios.patch(process.env.API_URL, {
-    params: params,
-  });
+updateUser = function (username, params) {
+  return axios.patch(process.env.API_URL + username, params);
 };
