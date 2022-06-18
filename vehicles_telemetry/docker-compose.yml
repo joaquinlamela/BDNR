@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      WIDE_COLUMN_DB_HOST: postgres
+      PORT: 80
+    depends_on:
+      - cassandra
+    ports:
+      - "3000:80"
+    volumes:
+      - ./app/src:/app/src
+
+  cassandra:
+    image: cassandra:latest
+    ports:
+      - "9042:9042"
+    volumes:
+      - cassandra-volume:/var/lib/cassandra
+    restart: always
+
+volumes:
+  cassandra-volume:
