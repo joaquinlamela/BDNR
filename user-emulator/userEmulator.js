@@ -34,17 +34,16 @@ const main = async () => {
           inquirer
             .prompt(userAttributesQuestions)
             .then(async (answers) => {
-              console.log("Email: " + answers["email"]);
-              console.log("Contraseña: " + answers["password"]);
-              console.log("Nombre: " + answers["name"]);
-              console.log("Apellido: " + answers["lastname"]);
-              console.log("Nombre de usuario: " + answers["username"]);
-              console.log("Fecha de nacimiento: " + answers["birthday"]);
-              console.log("País: " + answers["location"]);
-              console.log("Idioma de preferencia: " + answers["language"]);
+              console.log("Email: " + answers["Email"]);
+              console.log("Contraseña: " + answers["Password"]);
+              console.log("Nombre: " + answers["Name"]);
+              console.log("Apellido: " + answers["Lastname"]);
+              console.log("Nombre de usuario: " + answers["Username"]);
+              console.log("Fecha de nacimiento: " + answers["Birthday"]);
+              console.log("País: " + answers["Location"]);
+              console.log("Idioma de preferencia: " + answers["Language"]);
 
-              const response = await postUser(answers);
-              console.log(response.data);
+              await postUser(answers);
               return main();
             })
             .catch((err) => {
@@ -65,11 +64,11 @@ const main = async () => {
                 answers[usernameAttribute]
               );
               console.log(
-                response.data && response.data.length
-                  ? response.data
-                  : `Nombre de usuario: ` +
+                response.data && response.data.length === 2
+                  ? `Nombre de usuario: ` +
                       answers[usernameAttribute] +
                       ` no fue encontrado en el sistema.`
+                  : response.data
               );
               return main();
             })
@@ -84,7 +83,6 @@ const main = async () => {
           );
 
           const response = await getAllUsers();
-          console.log(response.data);
           if (response) {
             console.log(response.data);
             return main();
@@ -341,12 +339,10 @@ const associateCreditCardQuestions = [
 ];
 
 postUser = function (user) {
-  console.log(user);
   return axios.post(process.env.API_URL, user);
 };
 
 getUserByUsername = function (username) {
-  console.log(username);
   return axios.get(process.env.API_URL + username);
 };
 
