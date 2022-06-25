@@ -2,9 +2,9 @@
 class VehicleRegistryRepository {
   async create(data) {
     try {
-      const query = 'SELECT name, email FROM users WHERE key = ?';
+      // const query = 'SELECT name, email FROM users WHERE key = ?';
 
-      const rows = await wideColumnDbClient.execute(query, [ 'someone' ]);
+      // const rows = await wideColumnDbClient.execute(query, [ 'someone' ]);
 
       console.log("data", data);
       // return await Users.create(data);
