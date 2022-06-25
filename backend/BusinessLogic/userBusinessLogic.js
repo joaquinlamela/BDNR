@@ -24,7 +24,6 @@ module.exports = class UserBusinessLogic {
   async associatePaymentMethod(req) {
     let username = req.params.username;
     let data = req.body;
-    console.log(data);
     if (username) {
       return await this.userRepository.associatePaymentMethod(username, data);
     }
