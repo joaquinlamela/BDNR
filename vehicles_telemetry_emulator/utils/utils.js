@@ -6,9 +6,10 @@ export const getRandomNumber = (min,max)=>{
 }
 
 export const createCarBot = async (vehicleId) => {
+  await setTimeout(Math.floor(getRandomNumber(1,6))*1000);
     while (true) {
       await setTimeout(30000);
-      await axios.post(process.env.API_URL, {
+      const data = {
         "vehicle_id": vehicleId,
         "waves":getRandomNumber(0, 100).toFixed(2),
         "temperature":getRandomNumber(-10, 50).toFixed(2),
@@ -17,7 +18,9 @@ export const createCarBot = async (vehicleId) => {
         "voltage":getRandomNumber(0, 100).toFixed(2),
         "speed":getRandomNumber(-40, 300).toFixed(2),
         "time":Date.now()
-      })
+      }
+      await axios.post(process.env.API_URL, data)
+      console.log(`VEHICLE ${vehicleId} SEND DATA ${JSON.stringify(data)}`)
     }
   }
   
