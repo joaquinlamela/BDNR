@@ -4,7 +4,7 @@ class VehicleRegistryController {
   async create(req, res) {
     try {
       await vehicleRegistryService.create(req.body);
-      res.status(201);
+      res.status(201).send();
     } catch (err) {
       res.status(500).json({ message: err.message });
     }

@@ -9,6 +9,7 @@ services:
       WIDE_COLUMN_DB_HOST: cassandra
       WIDE_COLUMN_DB_KEYSPACE: bdnr
       WIDE_COLUMN_DB_LOCAL_DATA_CENTER: datacenter1
+      WIDE_COLUMN_DB_NAME: vehicle_registry
       PORT: 80
     depends_on:
       - cassandra
