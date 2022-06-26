@@ -1,9 +1,11 @@
 import cassandra from 'cassandra-driver'
 import { getWideColumnDbConfig } from './environment'
 
-wideColumnDb = getWideColumnDbConfig()
+const wideColumnDb = getWideColumnDbConfig()
 
-exports.wideColumnDbClient = new cassandra.Client({
+export const wideColumnDbClient = new cassandra.Client({
   contactPoints: [wideColumnDb.host],
+  localDataCenter: wideColumnDb.localDataCenter,
+  keyspace: wideColumnDb.keyspace
 });
 

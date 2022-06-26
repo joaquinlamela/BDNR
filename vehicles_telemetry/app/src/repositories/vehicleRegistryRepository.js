@@ -1,33 +1,46 @@
+import {wideColumnDbClient} from '../utils/dbConnection'
+import { getWideColumnDbConfig } from '../utils/environment'
+
+const wideColumnDb = getWideColumnDbConfig()
+
+const tableName = `${wideColumnDb.keyspace}.${wideColumnDb.databaseName}`
 
 class VehicleRegistryRepository {
+
   async create(data) {
     try {
-      // const query = 'SELECT name, email FROM users WHERE key = ?';
+      const tableNames = '(id,' + Object.keys(data).join(',') +')'
+      const values = '(uuid(),' + Object.values(data).join(',') +')'
+      const query = `insert into ${tableName} ${tableNames} values ${values}`;
 
-      // const rows = await wideColumnDbClient.execute(query, [ 'someone' ]);
-
-      console.log("data", data);
-      // return await Users.create(data);
+      await wideColumnDbClient.execute(query);
     } catch (err) {
-      throw new Error(`No se puede conectar con la base de datos ${err}`);
+      throw new Error(`Error connecting with database: ${err}`);
     }
   }
 
   async getAll(vehicleId) {
     try {
-      // return await Users.find();
+      const filter = vehicleId ? `WHERE vehicle_id = ${vehicleId}` : ''
+      const query = `SELECT * FROM ${tableName} ${filter}`;
+
+      const result = await wideColumnDbClient.execute(query)
+
+      return result['rows']
     } catch (err) {
-      throw new Error(`No se puede conectar con la base de datos ${err}`);
+      throw new Error(`Error connecting with database ${err}`);
     }
   }
 
   async getByRegistryId(registryId) {
     try {
-      // return await Users.find({
-      //   Username: new RegExp("^" + username + "$", "i"),
-      // });
+      const query = `SELECT * FROM ${tableName} WHERE id = ${registryId}`;
+
+      const result = await wideColumnDbClient.execute(query)
+
+      return result['rows']
     } catch (err) {
-      throw new Error(`No se puede conectar con la base de datos ${err}`);
+      throw new Error(`Error connecting with database ${err}`);
     }
   }
 };
