@@ -1,0 +1,15 @@
+{
+  "name": "emulator",
+  "version": "1.0.0",
+  "main": "emulator.js",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "start": "node --experimental-modules --es-module-specifier-resolution=node emulator.js"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "dotenv": "^10.0.0",
+    "inquirer": "^8.1.1"
+  }
+}
